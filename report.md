@@ -7,7 +7,7 @@
 複数スイッチに対応したラーニングスイッチ(multi_learning_switch.rb)の動作を説明する．
 ```
 
-####ソースコード  
+###ソースコード  
 * start\(\)  
 以下のように，FDB\(ForwardingDataBase\)を連想配列として扱うことで，それぞれのスイッチに対応するFDBを持つようにしている．こうすることで，複数スイッチへ対応している．
 ```
@@ -33,7 +33,7 @@ packet_inのあったスイッチに対応するFDBを参照（@fdbs.fetch\(\)�
 * flow_mod\(\),packet_out\(\)  
 これら２つのメソッドについては，複数スイッチ対応のために特別に変更点は無い．
 
-####動作確認  
+###動作確認  
 以下に示す環境にて複数スイッチ対応の確認を行った．
 [trema.multi.conf](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/trema.multi.conf)
 ```
@@ -53,7 +53,7 @@ link 'lsw2', 'host2-2'
 イメージ図：
 ![connection](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/connection.png)
 
-* テスト：host1-1，host1-2間，host2-1,host2-2間，host1-1，host2-1間の送受信  
+####テスト：host1-1，host1-2間，host2-1,host2-2間，host1-1，host2-1間の送受信  
 
 手順:
 ```
@@ -65,7 +65,7 @@ link 'lsw2', 'host2-2'
 ※各ステップごとに，パケットの送信状況及びフローテーブルの状態を確認する．
 ```
 
-####1.host1-1からhost1-2へパケットを送信  
+#####1.host1-1からhost1-2へパケットを送信  
 実行結果を以下に示す．
 ```
 $./bin/trema send_packets --source host1-1 --dest host1-2
@@ -83,7 +83,7 @@ $
 ![step1](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/1.png)
 host1-1\(192.168.0.1\)からhost1-2\(192.168.0.2\)へパケットが送信できていること，FDBにはまだ何も登録されていないことがわかる．これは，host1-1がスイッチlsw1に対してパケットを送信するが，フローテーブルにはまだ何も入っていない為，packet_inが発生するが，FDBにもまだ何も入っていない為，FDBにエントリが追加されるのみでフローテーブルには追加されない（flow_mod）メッセージは発生しない.  
 
-####2.host1-2からhost1-1へパケット送信  
+#####2.host1-2からhost1-1へパケット送信  
 実行結果を以下に示す．
 ```
 $ ./bin/trema send_packets --source host1-2 --dest host1-1
@@ -105,7 +105,7 @@ $
 ![step2](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/2.png)
 1.とは逆方向に対してもパケットが送信できていることが確認できる．また，フローテーブルにhost1-2からhost1-1へのエントリが追加されていることがわかる．host1-2がlsw1に対してhost1-1に対するパケットを送信した際はエントリがまだ無い為，packet_inが発生する．この時，FDBにはhost1-1の情報が入っている為lsw1に対してhost1-2からhost1-1へパケットを送信す為のflow_modメッセージが生成される．そのため，このような結果となる．  
 
-####3.host1-1からhost1-2へパケットをもう１度送信  
+#####3.host1-1からhost1-2へパケットをもう１度送信  
 実行結果を以下に示す．
 ```
 $ ./bin/trema send_packets --source host1-1 --dest host1-2
@@ -128,7 +128,7 @@ $
 ![step3](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/3.png)
 パケットが正しく送受信できていること，フローテーブルにhost1-1からhost1-2へのエントリが追加されていることが確認できる．  
 
-####4.1から3と同様のことをhost2-1とhost2-2に対して行う  
+#####4.1から3と同様のことをhost2-1とhost2-2に対して行う  
 実行結果を以下に示す．
 ```
 $ ./bin/trema send_packets --source host2-1 --dest host2-2
@@ -182,7 +182,7 @@ $
 ![step4](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/4.png)
 host1-1,host1-2の時と同様の結果が得られ，正しく実行できていることがわかる．また，lsw1に対して変更が加えられていないことも確認し，複数スイッチを独立して管理できていることを確認した．  
 
-####5.host1-1からhost2-1へパケットを送信  
+#####5.host1-1からhost2-1へパケットを送信  
 FDBがスイッチごとに独立して管理できていることを更に確認するため，確認を行った．結果を以下に示す．
 ```
 $ ./bin/trema send_packets --source host1-1 --dest host2-1
