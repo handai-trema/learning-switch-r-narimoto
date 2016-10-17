@@ -51,7 +51,7 @@ link 'lsw2', 'host2-1'
 link 'lsw2', 'host2-2'
 ```
 イメージ図：
-![connection](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/report/connection.png)
+![connection](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/connection.png)
 
 * テスト：host1-1，host1-2間の送受信，host2-1,host2-2間の送受信  
 手順:
@@ -79,7 +79,7 @@ $ ./bin/trema dump_flows lsw1
 $
 ```
 イメージ図:
-![step1](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/report/1.png)
+![step1](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/1.png)
 host1-1\(192.168.0.1\)からhost1-2\(192.168.0.2\)へパケットが送信できていること，FDBにはまだ何も登録されていないことがわかる．これは，host1-1がスイッチlsw1に対してパケットを送信するが，フローテーブルにはまだ何も入っていない為，packet_inが発生するが，FDBにもまだ何も入っていない為，FDBにエントリが追加されるのみでフローテーブルには追加されない（flow_mod）メッセージは発生しない.  
 
 2. host1-2からhost1-1へパケット送信  
@@ -101,7 +101,7 @@ cookie=0x0, duration=11.735s, table=0, n_packets=0, n_bytes=0, idle_age=11, prio
 $
 ```
 イメージ図:
-![step2](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/report/2.png)
+![step2](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/2.png)
 1.とは逆方向に対してもパケットが送信できていることが確認できる．また，フローテーブルにhost1-2からhost1-1へのエントリが追加されていることがわかる．host1-2がlsw1に対してhost1-1に対するパケットを送信した際はエントリがまだ無い為，packet_inが発生する．この時，FDBにはhost1-1の情報が入っている為lsw1に対してhost1-2からhost1-1へパケットを送信す為のflow_modメッセージが生成される．そのため，このような結果となる．  
 
 3. host1-1からhost1-2へパケットをもう１度送信  
@@ -124,7 +124,7 @@ cookie=0x0, duration=7.488s, table=0, n_packets=0, n_bytes=0, idle_age=7, priori
 $
 ```
 イメージ図:
-![step3](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/report/3.png)
+![step3](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/3.png)
 パケットが正しく送受信できていること，フローテーブルにhost1-1からhost1-2へのエントリが追加されていることが確認できる．  
 
 4. 1から3と同様のことをhost2-1とhost2-2に対して行う  
@@ -178,7 +178,7 @@ cookie=0x0, duration=15.848s, table=0, n_packets=0, n_bytes=0, idle_age=15, prio
 $
 ```
 イメージ図:
-![step4](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/report/4.png)
+![step4](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/4.png)
 host1-1,host1-2の時と同様の結果が得られ，正しく実行できていることがわかる．また，lsw1に対して変更が加えられていないことも確認し，複数スイッチを独立して管理できていることを確認した．  
 
 5. host1-1からhost2-1へパケットを送信  
@@ -205,5 +205,5 @@ cookie=0x0, duration=356.594s, table=0, n_packets=0, n_bytes=0, idle_age=356, pr
 $
 ```
 イメージ図:
-![step5](https://github.com/handai-trema/learning-switch-r-narimoto/blob/master/report/5.png)
+![step5](https://raw.githubusercontent.com/handai-trema/learning-switch-r-narimoto/master/report/5.png)
 host1-1からhost2-1へ送信は行っているが，異なるスイッチに接続しており，スイッチ間のリンクも無いのでhost2-1が受信できていないという正しい結果が得られた．また，それぞれのスイッチにおけるフローテーブルも変化がなく，FDBが正しくスイッチごとに独立管理できていることを確認した．
